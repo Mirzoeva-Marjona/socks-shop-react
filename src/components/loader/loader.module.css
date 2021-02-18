@@ -1,0 +1,14 @@
+.notification {
+    padding: 20px;
+    background-color: #EB5757;
+}
+
+._text {
+    font-size: 28px;
+    line-height: 100%;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+    color: #4F4F4F;
+}

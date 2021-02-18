@@ -46,6 +46,6 @@ html {
     background-color: rgba(0, 0, 0, .3);
 }
 
-.js-hidden {
+.hidden {
     visibility: hidden;
 }
