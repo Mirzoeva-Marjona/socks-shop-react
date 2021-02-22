@@ -1,8 +1,21 @@
 import React, {Component} from 'react'
+import {addPurchase} from "../../service/product.serveice";
 import styles from './product.card.module.css'
 import cx from 'classname'
 
 class Product extends Component {
+    state = {
+        size: ""
+    };
+
+    handleChange = (event) => {
+        this.setState({size: event.target.value})
+    }
+
+    addToBasket = () => {
+        addPurchase(this.props.id, this.state.size);
+    }
+
     render() {
         return <div id="productCard">
             <div className={cx(styles.card, styles._border)}>
@@ -17,14 +30,14 @@ class Product extends Component {
                     <span>руб.</span>
                 </div>
                 <div className={styles.size}>
-                    <select className={cx(styles.size, styles._text)}>
+                    <select className={cx(styles.size, styles._text)} onChange={this.handleChange}>
                         <option>Выберите размер</option>
                         <option>39-40</option>
                         <option>41-42</option>
                         <option>43-44</option>
                     </select>
                 </div>
-                <div className={cx(styles.button, styles._font)}>
+                <div className={cx(styles.button, styles._font)} onClick={this.addToBasket}>
                     <span>В корзину</span>
                 </div>
             </div>

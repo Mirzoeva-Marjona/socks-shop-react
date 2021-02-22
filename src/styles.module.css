@@ -47,5 +47,5 @@ html {
 }
 
 .hidden {
-    visibility: hidden;
+    visibility: visible;
 }

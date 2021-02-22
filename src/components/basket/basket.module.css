@@ -17,6 +17,10 @@
     overflow: auto;
 }
 
+._hidden {
+    visibility: hidden;
+}
+
 @media (max-width: 639px) {
     ._basket {
         width: 100%;
