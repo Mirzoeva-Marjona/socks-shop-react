@@ -6,12 +6,18 @@ class Counter extends Component {
         value: 0
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.value != this.props.value) {
+            this.setState((state, props) => ({
+                value: props.value
+            }));
+        }
+    }
+
     render() {
         const {value} = this.state;
-        const {name} = this.props;
         return (
             <div>
-                <h2>{this.props.name}</h2>
                 <button type={"button"} onClick={this.handleDecrease}>-</button>
                 <input type={"number"} value={value} onChange={this.handleChange}/>
                 <button type={"button"} onClick={this.handleIncrease}>+</button>
@@ -20,27 +26,29 @@ class Counter extends Component {
     }
 
     handleChange = (event) => {
-        const value = event.target.value
+        const value = event.target.value;
         this.setState({
             value
         })
+        this.props.countUpdated(value);
     }
 
     handleDecrease = () => {
+        const count = this.state.value - 1;
         this.setState({
-            value: --this.state.value
+            value: count
         })
+
+        this.props.countUpdated(count);
     }
 
     handleIncrease = () => {
+        const count = this.state.value + 1;
         this.setState({
-            value: ++this.state.value
+            value: count
         })
+        this.props.countUpdated(count);
     }
-}
-
-Counter.defaultProps = {
-    name: "Marjona"
 }
 
 export default Counter

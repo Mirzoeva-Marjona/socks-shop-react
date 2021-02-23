@@ -1,16 +1,16 @@
-.product-row {
+.product {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
 
-
-  &__image {
+.__image {
     height: 80px;
     width: 80px;
   }
 
-  &_font {
+._font {
     font-family: Rubik;
     font-style: normal;
     font-weight: normal;
@@ -19,18 +19,16 @@
     color: #4F4F4F;
   }
 
-  &__remove-button {
-    right: 20px;
-    cursor: pointer;
-    color: #4F4F4F;
-    border-radius: 5px;
+.__remove {
+  right: 20px;
+  cursor: pointer;
+  color: #4F4F4F;
+  border-radius: 5px;
+}
 
-    &:hover {
+.__remove:hover {
       background: #c9c5c5;
     }
-  }
 
   @media (max-width: 639px) {
-
   }
-}

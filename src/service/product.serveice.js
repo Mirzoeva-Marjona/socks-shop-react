@@ -1,3 +1,5 @@
+import {products} from './../data/products.data';
+
 export function addPurchase(id, size) {
     let idSize = id + "_" + size;
     let purchaseMap = getPurchases();
@@ -5,20 +7,32 @@ export function addPurchase(id, size) {
     if (purchase) {
         purchase.count++;
     } else {
-        purchaseMap.set(idSize,{id: id, count: 1})
+        purchaseMap.set(idSize,{id: id, count: 1, size: size});
     }
     savePurchases(purchaseMap);
 }
 
-function savePurchases (purchaseMap) {
+export function savePurchases (purchaseMap) {
     let json = JSON.stringify(Array.from(purchaseMap.entries()));
     localStorage.setItem("purchases", json);
 }
 
-function getPurchases() {
+export function getPurchases() {
     let purchases = localStorage.getItem("purchases");
     if (purchases) {
         return new Map(JSON.parse(purchases));
     }
     return new Map();
+}
+
+export function totalCount() {
+    let count = 0;
+    getPurchases().forEach(value => {
+        count += value.count;
+    })
+    return count;
+}
+
+export function getProduct(id) {
+    return products.filter((product) => product.id == id)[0];
 }

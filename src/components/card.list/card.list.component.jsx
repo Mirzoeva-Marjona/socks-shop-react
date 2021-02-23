@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import {products} from "../../data/products.data";
 import Product from "../product.card/product.card.component";
-import loader from "../loader/loader.component";
+import Loader from "../loader/loader.component";
 import styles from './card.list.module.css'
 import cx from 'classname'
-import Loader from "../loader/loader.component";
 
 function loadProducts() {
     return new Promise(resolve => {
@@ -47,6 +46,7 @@ class CardList extends Component {
                                 sex={product.sex}
                                 name={product.name}
                                 price={product.price}
+                                updateCount={this.props.updateCount}
                             />
                         )}
                     </>

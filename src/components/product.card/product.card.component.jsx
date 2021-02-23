@@ -5,7 +5,7 @@ import cx from 'classname'
 
 class Product extends Component {
     state = {
-        size: ""
+        size: "Выберите размер"
     };
 
     handleChange = (event) => {
@@ -13,7 +13,10 @@ class Product extends Component {
     }
 
     addToBasket = () => {
-        addPurchase(this.props.id, this.state.size);
+        if (this.state.size !== "Выберите размер") {
+            addPurchase(this.props.id, this.state.size);
+            this.props.updateCount();
+        }
     }
 
     render() {
