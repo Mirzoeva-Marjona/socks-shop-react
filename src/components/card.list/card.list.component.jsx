@@ -18,19 +18,35 @@ class CardList extends Component {
 
     state = {
         products: [],
-        loading: true
+        loading: true,
+        filteredProducts: [],
+        category: ''
     };
 
     async componentDidMount() {
         const products = await loadProducts()
         this.setState({
-            products,
-            loading: false
+            products: products,
+            loading: false,
+            filteredProducts: products
         })
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(prevProps)
+        console.log(this.props)
+        if (prevProps != this.props) {
+            this.setState((state, props) => ({
+                category: this.props.category,
+                filteredProducts: products.filter((product) => {
+                    return this.props.category === '' ? true : product.sex === this.props.category;
+                })
+            }));
+        }
+    }
+
     render() {
-        const {products, loading} = this.state
+        const {filteredProducts, loading} = this.state
 
         return (
             <div className={cx(styles._frame, styles.container)}>
@@ -38,7 +54,7 @@ class CardList extends Component {
                     <Loader/>
                 ) : (
                     <>
-                        {products.map(product =>
+                        {filteredProducts.map(product =>
                             <Product
                                 key={product.id}
                                 id={product.id}

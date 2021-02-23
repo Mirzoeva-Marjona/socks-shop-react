@@ -42,7 +42,7 @@ class Header extends Component {
                             fill="#4F4F4F"/>
                     </svg>
                 </div>
-                <Search/>
+                {/*<Search/>*/}
                 <div className={styles.basket} onClick={this.openBasket}>
                     <svg className={styles.button__svg} xmlns="http://www.w3.org/2000/svg">
                         <path

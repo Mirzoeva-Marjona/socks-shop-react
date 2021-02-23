@@ -15,7 +15,8 @@ const root = document.getElementById('root');
 class App extends Component {
     state = {
         count: totalCount(),
-        basketOpened: false
+        basketOpened: false,
+        sex: 'men'
     }
 
     render() {
@@ -23,8 +24,8 @@ class App extends Component {
             <Header count={this.state.count} openBasket={this.setOpenBasket}/>
             <main className={styles.main}>
                 <Banner/>
-                <Menu/>
-                <CardList updateCount={this.updateCount}/>
+                <Menu selectCategory={this.selectCategory}/>
+                <CardList updateCount={this.updateCount} category={this.state.sex}/>
             </main>
             {this.state.basketOpened && <Overlay/>}
             {this.state.basketOpened && <Basket closeBasket={this.setOpenBasket} updateCount={this.updateCount}/>}
@@ -41,6 +42,13 @@ class App extends Component {
     updateCount = () => {
         this.setState({
             count: totalCount()
+        })
+    }
+
+    selectCategory = (sex) => {
+        console.log('index ', sex);
+        this.setState({
+            sex: sex
         })
     }
 }
