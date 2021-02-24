@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useEffect, useState} from 'react'
 import {products} from "../../data/products.data";
 import Product from "../product.card/product.card.component";
 import Loader from "../loader/loader.component";
@@ -14,63 +14,57 @@ function loadProducts() {
     })
 }
 
-class CardList extends Component {
+const CardList = ({updateCount, category}) => {
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [curCategory, setCurCategory] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [allProducts, setAllProducts] = useState([]);
 
-    state = {
-        products: [],
-        loading: true,
-        filteredProducts: [],
-        category: ''
-    };
-
-    async componentDidMount() {
-        const products = await loadProducts()
-        this.setState({
-            products: products,
-            loading: false,
-            filteredProducts: products
-        })
+    let filter = (p) => {
+        return p.filter((product) => {
+            return category === '' ? true : product.sex === category;
+        });
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(prevProps)
-        console.log(this.props)
-        if (prevProps != this.props) {
-            this.setState((state, props) => ({
-                category: this.props.category,
-                filteredProducts: products.filter((product) => {
-                    return this.props.category === '' ? true : product.sex === this.props.category;
-                })
-            }));
+    const load = async () => {
+        const loadedProducts = await loadProducts();
+        setAllProducts(loadedProducts);
+        setLoading(false);
+        setFilteredProducts(filter(loadedProducts));
+    }
+
+    if (loading) {
+        load();
+    }
+
+    useEffect(() => {
+        if (category !== curCategory) {
+            setFilteredProducts(filter(allProducts));
+            setCurCategory(category);
         }
-    }
+    })
 
-    render() {
-        const {filteredProducts, loading} = this.state
-
-        return (
-            <div className={cx(styles._frame, styles.container)}>
-                {loading ? (
-                    <Loader/>
-                ) : (
-                    <>
-                        {filteredProducts.map(product =>
-                            <Product
-                                key={product.id}
-                                id={product.id}
-                                img={product.img}
-                                sex={product.sex}
-                                name={product.name}
-                                price={product.price}
-                                updateCount={this.props.updateCount}
-                            />
-                        )}
-                    </>
-                )
-                }
-            </div>
-        )
-    }
+    return (<div className={cx(styles._frame, styles.container)}>
+            {loading ? (
+                <Loader/>
+            ) : (
+                <>
+                    {filteredProducts.map(product =>
+                        <Product
+                            key={product.id}
+                            id={product.id}
+                            img={product.img}
+                            sex={product.sex}
+                            name={product.name}
+                            price={product.price}
+                            updateCount={updateCount}
+                        />
+                    )}
+                </>
+            )
+            }
+        </div>
+    )
 }
 
 export default CardList

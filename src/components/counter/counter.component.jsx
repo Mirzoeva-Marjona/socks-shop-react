@@ -1,54 +1,34 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 
-class Counter extends Component {
+const Counter = ({value, countUpdated}) => {
 
-    state = {
-        value: 0
-    }
+    const [countValue, setCountValue] = useState(value);
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.value != this.props.value) {
-            this.setState((state, props) => ({
-                value: props.value
-            }));
-        }
-    }
-
-    render() {
-        const {value} = this.state;
-        return (
-            <div>
-                <button type={"button"} onClick={this.handleDecrease}>-</button>
-                <input type={"number"} value={value} onChange={this.handleChange}/>
-                <button type={"button"} onClick={this.handleIncrease}>+</button>
-            </div>
-        )
-    }
-
-    handleChange = (event) => {
+    const handleChange = (event) => {
         const value = event.target.value;
-        this.setState({
-            value
-        })
-        this.props.countUpdated(value);
+        setCountValue(value);
+        countUpdated(value);
     }
 
-    handleDecrease = () => {
-        const count = this.state.value - 1;
-        this.setState({
-            value: count
-        })
-
-        this.props.countUpdated(count);
+    const handleDecrease = () => {
+        const count = countValue - 1;
+        setCountValue(count);
+        countUpdated(count);
     }
 
-    handleIncrease = () => {
-        const count = this.state.value + 1;
-        this.setState({
-            value: count
-        })
-        this.props.countUpdated(count);
+    const handleIncrease = () => {
+        const count = countValue + 1;
+        setCountValue(count);
+        countUpdated(count);
     }
+
+    return (
+        <div>
+            <button type={"button"} onClick={handleDecrease}>-</button>
+            <input type={"number"} value={value} onChange={handleChange}/>
+            <button type={"button"} onClick={handleIncrease}>+</button>
+        </div>
+    )
 }
 
 export default Counter

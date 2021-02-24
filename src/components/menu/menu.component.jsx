@@ -1,45 +1,45 @@
-import React, {Component} from 'react'
+import React from 'react'
 import styles from './menu.module.css'
 import cx from 'classname'
 
-class Menu extends Component {
-    render() {
-        return <section className={cx(styles.menu, styles._gray)}>
+const Menu = ({selectCategory}) => {
+
+    const selectMenCategory = () => {
+        selectCategory('men');
+    };
+
+    const selectWomenCategory = () => {
+        selectCategory('women');
+    };
+
+    const selectKidsCategory = () => {
+        selectCategory('kids');
+    };
+
+    const selectSaleCategory = () => {
+        selectCategory('');
+    };
+
+    return (<section className={cx(styles.menu, styles._gray)}>
             <label className={cx(styles.burger, styles._label)}>
                 <span></span>
             </label>
             <div className={cx(styles.holder, styles._frame)}>
-                <div className={cx(styles.button, styles._center)} onClick={this.selectMenCategory}>
+                <div className={cx(styles.button, styles._center)} onClick={selectMenCategory}>
                     <span className={styles.__title}>Мужские</span>
                 </div>
-                <div className={cx(styles.button, styles._center)} onClick={this.selectWomenCategory}>
+                <div className={cx(styles.button, styles._center)} onClick={selectWomenCategory}>
                     <span className={styles.__title}>Женские</span>
                 </div>
-                <div className={cx(styles.button, styles._center)} onClick={this.selectKidsCategory}>
+                <div className={cx(styles.button, styles._center)} onClick={selectKidsCategory}>
                     <span className={styles.__title}>Детские</span>
                 </div>
-                <div className={cx(styles.button, styles._center)} onClick={this.selectSaleCategory}>
+                <div className={cx(styles.button, styles._center)} onClick={selectSaleCategory}>
                     <span className={styles.__title}>Распродажа</span>
                 </div>
             </div>
         </section>
-    }
-
-    selectMenCategory = () => {
-        this.props.selectCategory('men');
-    }
-
-    selectWomenCategory = () => {
-        this.props.selectCategory('women');
-    }
-
-    selectKidsCategory = () => {
-        this.props.selectCategory('kids');
-    }
-
-    selectSaleCategory = () => {
-        this.props.selectCategory('');
-    }
+    )
 }
 
 export default Menu

@@ -1,24 +1,40 @@
-import React, {Component} from "react";
-import Overlay from "../overlay/overlay.component";
-import {getPurchases, savePurchases, getProduct, totalCount} from '../../service/product.serveice'
+import React, {useState} from "react";
+import {getProduct, getPurchases, savePurchases} from '../../service/product.serveice'
 import styles from './basket.module.css';
 import cx from 'classname'
 import BasketRow from "./basket-row/basket.row.component";
 
-class Basket extends Component {
+const Basket = ({closeBasket, updateCount}) => {
 
-    state = {
-        purchases: new Map()
-    }
+    const [purchases, setPurchases] = useState(getPurchases());
 
-    componentDidMount() {
-        this.setState({
-            purchases: getPurchases()
-        })
-    }
+    const basketUpdated = (idSize, purchase) => {
+        if (purchase.count == 0) {
+            purchases.delete(idSize)
+        } else {
+            purchases.set(idSize, purchase)
+        }
+        setPurchases(purchases);
 
-    render() {
-        return <div>
+        savePurchases(purchases);
+
+        updateCount();
+    };
+
+    const total = () => {
+        let total = 0;
+        purchases.forEach(value => {
+            total += value.count * getProduct(value.id).price
+        });
+        console.log(total);
+        return total;
+    };
+
+    const onCloseBasket = () => {
+        closeBasket(false);
+    };
+
+    return (<div>
             <div className={cx(styles.modal, styles._basket, styles._scroll, styles._hidden)}>
                 <div className={styles._content}>
                     <div className={styles.__header}>
@@ -27,7 +43,7 @@ class Basket extends Component {
                                 <span>Выбранные товары</span>
                             </div>
                         </div>
-                        <div className={styles.__close} onClick={this.closeBasket}>
+                        <div className={styles.__close} onClick={onCloseBasket}>
                             <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -38,53 +54,24 @@ class Basket extends Component {
                     </div>
                     <div>
                         {
-                            Array.from(this.state.purchases.entries()).map(([idSize, purchase]) => {
+                            Array.from(purchases.entries()).map(([idSize, purchase]) => {
                                 console.log(idSize);
                                 console.log(purchase);
                                 return <BasketRow key={idSize}
                                                   idSize={idSize}
                                                   purchase={purchase}
-                                                  purchaseRowUpdated={this.basketUpdated}
+                                                  purchaseRowUpdated={basketUpdated}
                                 />
                             })
                         }
                     </div>
                     <div className={cx(styles.__total, styles._font)}>
-                        <span>{this.total() + ' руб.'}</span>
+                        <span>{total() + ' руб.'}</span>
                     </div>
                 </div>
             </div>
         </div>
-    }
-
-    basketUpdated = (idSize, purchase) => {
-        let purchases = this.state.purchases;
-        if (purchase.count == 0) {
-            purchases.delete(idSize)
-        } else {
-            purchases.set(idSize, purchase)
-        }
-        this.setState({
-                purchases: purchases
-            }
-        );
-        savePurchases(purchases);
-        this.props.updateCount();
-    }
-
-
-    total() {
-        let total = 0;
-        this.state.purchases.forEach(value => {
-            total += value.count * getProduct(value.id).price
-        });
-        console.log(total);
-        return total;
-    }
-
-    closeBasket = () => {
-        this.props.closeBasket(false);
-    }
+    )
 }
 
 export default Basket
