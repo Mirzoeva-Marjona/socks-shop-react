@@ -29,7 +29,7 @@ const BasketRow = ({idSize, purchase, purchaseRowUpdated}) => {
     return (<div>
             <div className={cx(styles.product, styles._font)}>
                 <div>
-                    <img className={styles.__image} src={product.img} alt="Изображение не найдено"/>
+                    <img className={styles.__image} src={process.env.PUBLIC_URL + "/" + product.img} alt="Изображение не найдено"/>
                 </div>
                 <div>{product.name}</div>
                 <div>{size}</div>
