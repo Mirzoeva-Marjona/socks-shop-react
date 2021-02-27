@@ -1,0 +1,12 @@
+.card {
+    margin: auto;
+    width: 40%;
+    height: 60%;
+    display: grid;
+    border-spacing: 0px 30px;
+    grid-template-areas:
+        "item-image item-image"
+        "product-card__name product-card__name"
+        "product-card__price product-card__price"
+        "socks-size product-card__button-in-basket";
+}
