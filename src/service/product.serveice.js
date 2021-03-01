@@ -1,4 +1,5 @@
 import {products} from './../data/products.data';
+import {get} from "react-hook-form";
 
 export function addPurchase(id, size) {
     let idSize = id + "_" + size;
@@ -25,12 +26,8 @@ export function getPurchases() {
     return new Map();
 }
 
-export function totalCount() {
-    let count = 0;
-    getPurchases().forEach(value => {
-        count += value.count;
-    })
-    return count;
+export function getPurchase(idSize) {
+    return getPurchases().get(idSize);
 }
 
 export function getProduct(id) {

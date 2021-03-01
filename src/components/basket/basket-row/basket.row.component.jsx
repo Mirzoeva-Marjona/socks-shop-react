@@ -3,27 +3,46 @@ import Counter from "../../counter/counter.component";
 import {getProduct} from "../../../service/product.serveice";
 import styles from './basket.row.module.css';
 import cx from 'classname';
+import store from "../../../service/store";
+import {useDispatch, useSelector} from "react-redux";
+import {ADD_TO_CART, DELETE_CART_ROW, DELETE_FROM_CART} from "../../../service/reducers/purchases.reducer";
 
-const BasketRow = ({idSize, purchase, purchaseRowUpdated}) => {
+const BasketRow = ({idSize}) => {
 
-    const [purchaseValue, setPurchase] = useState(purchase);
+    const purchaseValue = useSelector((state => {
+        return state.cart.purchases.get(idSize);
+    }));
     const product = getProduct(purchaseValue.id);
+    const dispatch = useDispatch();
     let count = purchaseValue.count;
     let size = purchaseValue.size;
-    console.log(count, purchase, purchaseValue);
 
     const remove = () => {
-        purchaseUpdated(0);
+        dispatch({
+            type: DELETE_CART_ROW,
+            payload: {
+                idSize:idSize
+            }
+        })
     }
 
     const purchaseUpdated = (count) => {
-        let purchase = {
-            ...purchaseValue,
-            count: count
+        if (purchaseValue.count < count) {
+            dispatch({
+                type: ADD_TO_CART,
+                payload: {
+                    id: purchaseValue.id,
+                    size: size
+                }
+            })
+        } else {
+            dispatch({
+                type: DELETE_FROM_CART,
+                payload: {
+                    idSize: idSize
+                }
+            })
         }
-
-        setPurchase(purchase);
-        purchaseRowUpdated(idSize, purchase);
     }
 
     return (<div>

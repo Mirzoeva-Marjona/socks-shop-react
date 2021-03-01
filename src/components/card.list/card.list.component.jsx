@@ -4,6 +4,7 @@ import Product from "../product.card/product.card.component";
 import Loader from "../loader/loader.component";
 import styles from './card.list.module.css'
 import cx from 'classname'
+import {useSelector} from "react-redux";
 
 function loadProducts() {
     return new Promise(resolve => {
@@ -14,11 +15,14 @@ function loadProducts() {
     })
 }
 
-const CardList = ({updateCount, category}) => {
+const CardList = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [curCategory, setCurCategory] = useState('');
     const [loading, setLoading] = useState(true);
     const [allProducts, setAllProducts] = useState([]);
+    const category = useSelector((state) => {
+        return state.common.category
+    })
 
     let filter = (p) => {
         return p.filter((product) => {
@@ -57,7 +61,6 @@ const CardList = ({updateCount, category}) => {
                             sex={product.sex}
                             name={product.name}
                             price={product.price}
-                            updateCount={updateCount}
                         />
                     )}
                 </>

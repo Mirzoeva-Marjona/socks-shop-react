@@ -3,23 +3,16 @@ import {getProduct, getPurchases, savePurchases} from '../../service/product.ser
 import styles from './basket.module.css';
 import cx from 'classname'
 import BasketRow from "./basket-row/basket.row.component";
+import {useDispatch, useSelector} from "react-redux";
+import {DELETE_CART_ROW} from "../../service/reducers/purchases.reducer";
+import {CLOSE_BASKET} from "../../service/reducers/common.reducer";
 
-const Basket = ({closeBasket, updateCount}) => {
+const Basket = () => {
+    const purchases = useSelector((store) => {
+        return store.cart.purchases
+    })
 
-    const [purchases, setPurchases] = useState(getPurchases());
-
-    const basketUpdated = (idSize, purchase) => {
-        if (purchase.count == 0) {
-            purchases.delete(idSize)
-        } else {
-            purchases.set(idSize, purchase)
-        }
-        setPurchases(purchases);
-
-        savePurchases(purchases);
-
-        updateCount();
-    };
+    const dispatch = useDispatch();
 
     const total = () => {
         let total = 0;
@@ -31,7 +24,9 @@ const Basket = ({closeBasket, updateCount}) => {
     };
 
     const onCloseBasket = () => {
-        closeBasket(false);
+        dispatch({
+            type: CLOSE_BASKET
+        })
     };
 
     return (<div>
@@ -59,8 +54,6 @@ const Basket = ({closeBasket, updateCount}) => {
                                 console.log(purchase);
                                 return <BasketRow key={idSize}
                                                   idSize={idSize}
-                                                  purchase={purchase}
-                                                  purchaseRowUpdated={basketUpdated}
                                 />
                             })
                         }

@@ -5,10 +5,13 @@ import styles from "../product.card/product.card.module.css";
 import style from "./product.details.module.css"
 import {Link, useParams} from "react-router-dom";
 import {addPurchase, getProduct} from "../../service/product.serveice";
+import {useDispatch} from "react-redux";
+import {ADD_TO_CART} from "../../service/reducers/purchases.reducer";
 
-const ProductDetails = ({updateCount}) => {
+const ProductDetails = () => {
     const {id} = useParams();
     console.log(id);
+    const dispatch = useDispatch();
 
     const [product, setProduct] = useState(getProduct(id));
     const [size, setSize] = useState("Выберите размер");
@@ -20,8 +23,13 @@ const ProductDetails = ({updateCount}) => {
 
     const addToBasket = () => {
         if (size !== "Выберите размер") {
-            addPurchase(product.id, size);
-            updateCount();
+            dispatch({
+                type: ADD_TO_CART,
+                payload: {
+                    id: id,
+                    size: size
+                }
+            })
         }
     };
 
