@@ -1,8 +1,20 @@
 import React from 'react'
 import styles from './menu.module.css'
 import cx from 'classname'
+import {useDispatch} from "react-redux";
+import {CATEGORY} from "../../service/reducers/common.reducer";
 
-const Menu = ({selectCategory}) => {
+const Menu = () => {
+    const dispatch = useDispatch();
+
+    const selectCategory = (category) => {
+        dispatch({
+            type: CATEGORY,
+            payload: {
+                category: category
+            }
+        })
+    };
 
     const selectMenCategory = () => {
         selectCategory('men');

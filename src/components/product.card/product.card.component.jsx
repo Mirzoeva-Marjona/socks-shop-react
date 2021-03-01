@@ -3,10 +3,13 @@ import {addPurchase} from "../../service/product.serveice";
 import styles from './product.card.module.css'
 import cx from 'classname'
 import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {ADD_TO_CART} from "../../service/reducers/purchases.reducer";
 
 const Product = ({id, img, sex, name, price, updateCount}) => {
 
     const [size, setSize] = useState("Выберите размер");
+    const dispatch = useDispatch();
 
     const handleChange = (event) => {
         setSize(event.target.value)
@@ -14,8 +17,13 @@ const Product = ({id, img, sex, name, price, updateCount}) => {
 
     const addToBasket = () => {
         if (size !== "Выберите размер") {
-            addPurchase(id, size);
-            updateCount();
+            dispatch({
+                type: ADD_TO_CART,
+                payload: {
+                    id: id,
+                    size: size
+                }
+            })
         }
     };
 

@@ -2,11 +2,26 @@ import React from 'react'
 import styles from './header.module.css'
 import cx from 'classname'
 import {Link} from "react-router-dom";
+import {getPurchases} from "../../service/product.serveice";
+import {useDispatch, useSelector} from "react-redux";
+import {DELETE_CART_ROW} from "../../service/reducers/purchases.reducer";
+import {OPEN_BASKET} from "../../service/reducers/common.reducer";
 
-const Header = ({count, openBasket}) => {
+const Header = () => {
+    const count = useSelector((store) => {
+        let count = 0;
+        store.cart.purchases.forEach(value => {
+            count += value.count;
+        })
+        return count;
+    })
+
+    const dispatch = useDispatch();
 
     const onOpenBasket = () => {
-        openBasket(true);
+        dispatch({
+            type: OPEN_BASKET
+        })
     };
 
     return (
